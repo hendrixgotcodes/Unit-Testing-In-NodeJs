@@ -3,8 +3,11 @@ const expect = chai.expect
 const demo = require("./demo")
 const chaiAsPromised = require('chai-as-promised')
 const sinon = require('sinon')
+const sinonChai = require('sinon-chai')
 
 chai.use(chaiAsPromised)
+chai.use(sinonChai)
+
 
 
 describe('demo', () => {
@@ -52,7 +55,7 @@ describe('demo', () => {
         })
 
         it('should test promise with chai-as-promised', async()=>{
-            await expect(demo.addPromise(1,3)).to.eventually.equal(3)
+            await expect(demo.addPromise(1,3)).to.eventually.equal(4)
         })
 
 
@@ -64,6 +67,8 @@ describe('demo', () => {
             demo.foo()
 
             expect(spy.calledOnce).to.be.true            
+            expect(spy).to.have.been.calledOnce
+            spy.restore()
         });
         
     });
