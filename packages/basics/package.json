@@ -14,5 +14,9 @@
     "chai-as-promised": "^7.1.1",
     "cross-env": "^7.0.3",
     "sinon": "^13.0.2"
+  },
+  "dependencies": {
+    "D": "^1.0.0",
+    "sinon-chai": "^3.7.0"
   }
 }
