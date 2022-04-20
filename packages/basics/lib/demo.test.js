@@ -70,6 +70,16 @@ describe('demo', () => {
             expect(spy).to.have.been.calledOnce
             spy.restore()
         });
+
+        it('should stub console.warn', ()=>{
+            const stub = sinon.stub(console, 'warn').callsFake(()=>console.log('message from stub'))
+            
+            demo.foo()
+
+            // next line triggers an error to see of console.warn was really called but stubbed
+            // expect(stub).to.have.been.calledWith('====console.warn was called====')
+
+        })
         
     });
     
