@@ -1,9 +1,10 @@
 const chai = require("chai")
 const expect = chai.expect
-const demo = require("./demo")
 const chaiAsPromised = require('chai-as-promised')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
+const rewire = require('rewire')
+var demo = rewire("./demo")
 
 chai.use(chaiAsPromised)
 chai.use(sinonChai)
@@ -72,15 +73,39 @@ describe('demo', () => {
         });
 
         it('should stub console.warn', ()=>{
-            const stub = sinon.stub(console, 'warn').callsFake(()=>console.log('message from stub'))
+            // const stub = sinon.stub(console, 'warn').
+            // // const stub = sinon.stub(console, 'warn').callsFake(()=>console.log('message from stub'))
             
-            demo.foo()
+            // // demo.foo()
 
-            // next line triggers an error to see of console.warn was really called but stubbed
-            // expect(stub).to.have.been.calledWith('====console.warn was called====')
+            // // next line triggers an error to see of console.warn was really called but stubbed
+            // // expect(stub).to.have.been.calledWith('====console.warn was called====')
+
+            // expect(stub).to.have.been.calledOnce
+
+            // stub.restore()
 
         })
         
+    });
+
+    context('stub private function', () => {
+        it('should stub createFile', async() => {
+            const createFileStub = sinon.stub(demo, 'createFile').resolves('create_stub')
+            const callStub = sinon.stub().resolves('calldb_stub')
+            
+            demo.__set__('callDB', callStub)
+
+            const result = await demo.bar('test.jpg')
+
+            expect(result).to.equal('calldb_stub')
+            expect(createFileStub).to.have.been.calledOnce
+            expect(callStub).to.have.been.calledOnce
+
+            createFileStub.restore()
+
+
+        });        
     });
     
 });
